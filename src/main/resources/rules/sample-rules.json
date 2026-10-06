@@ -1,0 +1,34 @@
+[
+  {
+    "id": "RULE-BRUTE-FORCE",
+    "name": "登录暴力破解",
+    "description": "同一账号在 1 分钟内登录失败达到 5 次",
+    "entityField": "entityId",
+    "threshold": 5,
+    "window": "PT1M",
+    "filter": {
+      "and": [
+        { "field": "eventType", "op": "==", "value": "LOGIN" },
+        { "field": "attr.outcome", "op": "==", "value": "FAILURE" }
+      ]
+    }
+  },
+  {
+    "id": "RULE-RAPID-ACCESS",
+    "name": "高频访问",
+    "description": "同一来源 IP 在 30 秒内访问达到 11 次",
+    "entityField": "attr.sourceIp",
+    "threshold": 11,
+    "window": 30000,
+    "filter": { "field": "eventType", "op": "==", "value": "ACCESS" }
+  },
+  {
+    "id": "RULE-SINGLE-PRIVILEGE",
+    "name": "敏感操作（单事件）",
+    "description": "出现一次提权操作即告警",
+    "entityField": "entityId",
+    "threshold": 1,
+    "window": "PT1M",
+    "filter": { "field": "eventType", "op": "==", "value": "PRIVILEGE_ESCALATION" }
+  }
+]
